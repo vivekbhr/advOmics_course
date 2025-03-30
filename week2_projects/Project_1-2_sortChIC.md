@@ -2,10 +2,10 @@
 
 ## System setup
 
-**Machine:** At least 16 gb of RAM.
-**OS:** mac/linux. A linux subsystem for windows might work, but is untested.
-**Language:** Python, Bash
-**Slack channel name:** project_sortchic
+ - **Machine:** At least 16 gb of RAM.
+ - **OS:** mac/linux. A linux subsystem for windows might work, but is untested.
+ - **Language:** Python, Bash
+ - **Slack channel name:** project_sortchic
 
 ### Install conda
 
