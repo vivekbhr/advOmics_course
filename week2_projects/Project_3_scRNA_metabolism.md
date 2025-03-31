@@ -2,22 +2,26 @@
 
 ## System setup
 
- - **Machine:** At least 16 gb of RAM.
- - **OS:** mac/linux/windows
- - **Language:** R
- - **Slack channel name:** project_scRNA
+- **Machine:** At least 8 gb of RAM.
+- **OS:** Windows/Mac/Linux.
+- **Language:** R. Tested on version 4.4.2.
+- **Slack channel name:** project_metabolism_from_gene_expression
 
-## Background
+## Introduction and dataset
 
 It seems you should use transcriptomics if you want to look at transcripts, and metabolomics to look at metabolic processes. While true, you can also use (single cell) transcriptomics to look at metabolic processes. While metabolites do not have RNA transcripts, cellular metabolism is regulated by enzymes, which do have transcripts that you can analyze. The benefit of using single cell transcriptomics to analyze metabolic processes, is that you also have information about other aspects of the cell, such as the cell type. This can give you a lot more complete picture of the tissue you are looking at.
 
-In this exercise, we will support the conclusions of one paper using the data of another, completely unrelated paper. This should give you an idea of how powerful gene set analysis can be, and should prepare you to apply this technique yourself in your own research projects.
+## Objective
+
+In this exercise, we will support the main conclusions of one paper using the data of another, completely unrelated paper. This should give you an idea of how powerful gene set analysis can be, and should prepare you to apply this technique yourself in your own research projects.
+
+The dataset paper that we will look at is the paper of Haber et al., 2017. The paper can be viewed at https://doi.org/10.1038/nature24489 . It is a widely used single-cell RNAseq dataset. According to the editorial summary, it is "a comprehensive analysis of the epithelial cell composition of mouse small intestines when healthy and after infection". In this assignment, we will only use data of the healthy mouse. We will start by downloading, loading and pre-processing the data.
+
+The results paper that we will look at is the paper of Rodriguez-Colman et al., 2017, "Interplay between metabolic identities in the intestinal crypt supports stem cell function" ( https://www.nature.com/articles/nature21673 ). This paper, written by our lab, describes the metabolic differences in cell types in the intestinal crypt. The abstract contains a few conclusions, which we will try to replicate using the data of the Haber et al. paper.
 
 ## Downloading the data
 
-In this assignment, we will look at the paper of Haber et al., 2017. It is a widely used single-cell RNAseq dataset. According to the editorial summary, it is "a comprehensive analysis of the epithelial cell composition of mouse small intestines when healthy and after infection". In this assignment, we will only use data of the healthy mouse. We will start by downloading, loading and pre-processing the data.
-
-The paper can be viewed at https://doi.org/10.1038/nature24489 . First, go the paper, find the "Accession codes" section and click on the link to the Gene Expression Omnibus. (The text of that link reads "GSE92332", and it should be the only link in that section.)
+First, go the Haber et al. 2017 paper linked above, find the "Accession codes" section and click on the link to the Gene Expression Omnibus. (The text of that link reads "GSE92332", and it should be the only link in that section.)
 
 If you scroll down on that webpage, you should find a table with download links. Download the "GSE92332_atlas_UMIcounts.txt.gz". Warning: while the download is just 15.2 MB, but if you extract it, you'll end up with a text file of 226 MB. For this assignment it doesn't matter whether you leave it compressed or not. To save disk space, you can leave it compressed, so that the file name ends with ".txt.gz" instead of ".txt".
 
