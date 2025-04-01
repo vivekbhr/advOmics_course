@@ -4,7 +4,7 @@
 
  - **Machine:** At least 16 gb of RAM.
  - **OS:** mac/linux. A linux subsystem for windows might work, but is untested.
- - **Language:** Python, Bash
+ - **Language:** Python, Bash, R (optional, if you use DESeq2 instead of pyDESeq2)
  - **Slack channel name:** project_sortchic
 
 ### Install conda
@@ -29,24 +29,29 @@ Create a new conda environment: advomics, and install:
  - loompy
  - pyDESEQ2
 
-Launch a new notebook within the advomics env and load the above packages to ensure that everything works.
+**Launch a new notebook within the advomics env and load the above packages to ensure that everything works.**
 
 
 ### Tips
 
- - Loompy is not well maintained, and might be incompatible with the latest version of scanpy/anndata. It might need a separate environment. I suggest installing sincei and jupyter first, then trying to load loompy and the dataset. If you get erorrs, try a fresh install of loompy in a new environment.
+ - Loompy is not well maintained, and might be incompatible with the latest version of scanpy/anndata. It might need a separate environment. I suggest installing sincei and jupyter first, then trying to load loompy and the dataset. If you get an error, try a fresh install of loompy in a new environment.
 
 ## Objectives
 
 The aim of this project is to partially replicate the findings of [Zeller, Yueng et al (2023)](https://www.nature.com/articles/s41588-022-01260-3), using a combination of tools: sincei, scanpy, and pyDESeq2.
 
-In particular we will try to replicate the results of cell clustering (shown in Fig. 2 a,b) and recover the top cell-type specific genes regulated by the activate/repressive chromatin states (Fig. 2 c-f).  
+In particular we will try to replicate the results of cell clustering (shown in **Fig. 2 a,b**) and recover the top cell-type specific genes regulated by the activate/repressive chromatin states (**Fig. 2 c-f**).  
 
-Each group (3-4 people) would be assigned a chromatin mark (one of *H3K4me3, H3K4me1, H3K27me3, H3K9me3*) and would therefore focus on replicating the results shown for their own chromatin mark.
+Each project group would be assigned a chromatin mark and would therefore focus on replicating the results shown for their own chromatin mark.
+
+ - Group 1: H3K4me1
+ - Group 2: H3K27me3
+ - Group 3: H3K4me3
+ - Group 4: H3K9me3
 
 ## Instructions
 
- - The data is available from figshare, using this link: https://figshare.com/s/31c3d4676830a614d886. Have a look at the data description on figshare for more details.
+ - The data is available from figshare, using this link: https://figshare.com/s/31c3d4676830a614d886. Have a look at the data description on figshare for more details about the files.
 
  - Download the .loom file named with your selected hPTM (in case of H3K4me1, the file is `scCounts_genebodies_k4me1.loom`)
 
@@ -54,11 +59,15 @@ Each group (3-4 people) would be assigned a chromatin mark (one of *H3K4me3, H3K
 
  - After clustering, load the clustered .loom file in python, and apply the T-test in scanpy to find the top genes per cluster. Annotate clusters based on the top genes (compared to those shown in the sortChIC manuscript)
 
- - Compare your clustring/annotation results with the metadata provided with the files.
 
- - To identify potentially novel genes from your results, use pyDESEQ2 to perform a DE analysis between clusters.
+### Expected analysis for the project
 
+ - Compare your clustering/annotation results with the metadata provided with the files. Do we see the same cell types as the authors, or are there differences? How can we explain the differences (is that related to the biology, or an effect of preprocessing)?
+
+ - Identify genes that are driving the cluster-specific differences. First we will try a simpler method: T-test or Wilcox test. Next, we will try the bulk differential enrichment (DE) analysis using DESeq2. Next, we will compare the 2 methods and also compare the results with the original study. Which genes are (re)discovered? Could you identify novel genes? Which analysis works better?
 
 ### Tips
+
+ - The logic for pyDESeq2 analysis in our data is same as that for differential expression analysis (introduced in the **Transcriptomics** lectures). And if you prefer, you can use the original version of DESeq2 implemented in R, instead of pyDESeq2, and follow the workflow of the transcriptomics practical.
 
  - As pyDESEq2 is aimed at (pseudo)bulk differential expression analysis, this would require creating arbitrary pseudo-bulk replicates from single-cell counts for each cluster/celltype by sampling cells (without replacement) from each group.
