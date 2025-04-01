@@ -7,6 +7,18 @@
  - **Language:** Python, Bash, R (optional, if you use DESeq2 instead of pyDESeq2)
  - **Slack channel name:** project_sortchic
 
+## Introduction
+
+Organism development is a complicated process in which cells follow defined differentiation paths to form each cell type. Epigenetic mechanisms such as histone modifications have been shown to have a crucial role in controlling differentiation decisions1, but studying the changes in histone mark distributions during the process of cell differentiation has so far been very challenging.
+
+Two main challenges exist. First, despite considerable knowledge about cell-enrichment strategies for rare cell types, cleanly purifying intermediate stages along differentiation trajectories is not possible. Second, even if those strategies were developed, or existing single-cell methods were applied, the sparsity of these cells would demand unacceptable mouse euthanasia.
+
+To bridge this gap, [Zeller, Yueng et al (2023)](https://www.nature.com/articles/s41588-022-01260-3) developed a method that utilizes detailed knowledge about cell-type enrichment and identification by surface markers, together with highly sensitive histone mark profiling in single cells, called ‘sort-assisted single-cell chromatin immunocleavage’ (sortChIC). For each cell, they recorded its histone modification by sequencing antibody-targeted micrococcal nuclease cuts2, as well as surface marker abundance by fluorescence-activated cell sorting (FACS). They applied this method to mouse bone marrow, for which antibody combinations have been established for the identification and purification of many mature and progenitor cell types, down to very rare hematopoietic stem cells (HSCs) that make up less than 0.1% of bone marrow cells (Fig. 1a). This enabled them to systematically describe the dynamic changes of two active histone modifications (H3K4me1 and H3K4me3) and two repressive histone modifications (H3K9me3 and H3K27me3) along the full hematopoietic differentiation trajectory. They used histone-modification abundance on known marker genes, as well as FACS-recorded surface-marker information, to unambiguously identify cell types for all four histone modifications (Fig. 1b).
+
+![sortChIC background](https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41588-022-01259-w/MediaObjects/41588_2022_1259_Fig1_HTML.png?as=webp)
+
+## Install packages
+
 ### Install conda
 
 Install the minimal version of **conda**, either as [miniconda](https://www.anaconda.com/docs/getting-started/miniconda/main), or from [miniforge](https://github.com/conda-forge/miniforge)
@@ -22,17 +34,25 @@ In a nutshell:
 
 ### install required packages via conda
 
-Create a new conda environment: advomics, and install:
+Create a  new conda environment: advomics, and install:
 
- - sincei (also installs scanpy)
- - jupyter-notebook
+ - jupyter
  - loompy
- - pyDESEQ2
+ - sincei (also installs scanpy)
+ - pyDESEQ2 (from pip)
 
 **Launch a new notebook within the advomics env and load the above packages to ensure that everything works.**
 
 
 ### Tips
+ - installing packages from conda requires a bit of back and forth. Not all packages will install right away, as the fetched package binaries depend on your OS. For example, the following order worked on an M3 macbook (architecture: OSX-ARM64)
+
+ ```
+ conda create -n advomics_sincei -c bioconda -c conda-forge jupyter
+ conda activate advomics
+ pip install sincei
+ pip install pydeseq2
+ ```
 
  - Loompy is not well maintained, and might be incompatible with the latest version of scanpy/anndata. It might need a separate environment. I suggest installing sincei and jupyter first, then trying to load loompy and the dataset. If you get an error, try a fresh install of loompy in a new environment.
 
