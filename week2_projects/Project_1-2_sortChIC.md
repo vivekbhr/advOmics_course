@@ -9,15 +9,26 @@
 
 ## Introduction
 
-Organism development is a complicated process in which cells follow defined differentiation paths to form each cell type. Epigenetic mechanisms such as histone modifications have been shown to have a crucial role in controlling differentiation decisions1, but studying the changes in histone mark distributions during the process of cell differentiation has so far been very challenging.
+Organism development is a complicated process in which cells follow defined differentiation paths to form each cell type. Epigenetic mechanisms such as histone modifications have been shown to have a crucial role in controlling differentiation decisions, but studying the changes in histone mark distributions during the process of cell differentiation has so far been very challenging.
 
-Two main challenges exist. First, despite considerable knowledge about cell-enrichment strategies for rare cell types, cleanly purifying intermediate stages along differentiation trajectories is not possible. Second, even if those strategies were developed, or existing single-cell methods were applied, the sparsity of these cells would demand unacceptable mouse euthanasia.
-
-To bridge this gap, [Zeller, Yueng et al (2023)](https://www.nature.com/articles/s41588-022-01260-3) developed a method that utilizes detailed knowledge about cell-type enrichment and identification by surface markers, together with highly sensitive histone mark profiling in single cells, called ‘sort-assisted single-cell chromatin immunocleavage’ (sortChIC). For each cell, they recorded its histone modification by sequencing antibody-targeted micrococcal nuclease cuts2, as well as surface marker abundance by fluorescence-activated cell sorting (FACS). They applied this method to mouse bone marrow, for which antibody combinations have been established for the identification and purification of many mature and progenitor cell types, down to very rare hematopoietic stem cells (HSCs) that make up less than 0.1% of bone marrow cells (Fig. 1a). This enabled them to systematically describe the dynamic changes of two active histone modifications (H3K4me1 and H3K4me3) and two repressive histone modifications (H3K9me3 and H3K27me3) along the full hematopoietic differentiation trajectory. They used histone-modification abundance on known marker genes, as well as FACS-recorded surface-marker information, to unambiguously identify cell types for all four histone modifications (Fig. 1b).
+To tackle this challenge, [Zeller, Yueng et al (2023)](https://www.nature.com/articles/s41588-022-01260-3) developed a method that utilizes detailed knowledge about cell-type enrichment and identification by surface markers, together with highly sensitive histone mark profiling in single cells, called ‘sort-assisted single-cell chromatin immunocleavage’ (sortChIC). For each cell, they recorded its histone modification by sequencing antibody-targeted micrococcal nuclease cuts, as well as surface marker abundance by fluorescence-activated cell sorting (FACS). They applied this method to mouse bone marrow, for which antibody combinations have been established for the identification and purification of many mature and progenitor cell types, down to very rare hematopoietic stem cells (HSCs) that make up less than 0.1% of bone marrow cells (Fig. 1a). This enabled them to systematically describe the dynamic changes of two active histone modifications (H3K4me1 and H3K4me3) and two repressive histone modifications (H3K9me3 and H3K27me3) along the full hematopoietic differentiation trajectory. They used histone-modification abundance on known marker genes, as well as FACS-recorded surface-marker information, to unambiguously identify cell types for all four histone modifications (Fig. 1b).
 
 ![sortChIC background](https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41588-022-01259-w/MediaObjects/41588_2022_1259_Fig1_HTML.png?as=webp)
 
-## Install packages
+## Objectives
+
+The aim of this project is to partially replicate the findings of [Zeller, Yueng et al (2023)](https://www.nature.com/articles/s41588-022-01260-3), using a combination of tools: sincei, scanpy, and pyDESeq2.
+
+In particular we will try to replicate the results of cell clustering (shown in **Fig. 2 a,b**) and recover the top cell-type specific genes regulated by the activate/repressive chromatin states (**Fig. 2 c-f**).  
+
+Each project group would be assigned a chromatin mark and would therefore focus on replicating the results shown for their own chromatin mark.
+
+ - Group 1: H3K4me1
+ - Group 2: H3K27me3
+ - Group 3: H3K4me3
+ - Group 4: H3K9me3
+
+## Installation instructions
 
 ### Install conda
 
@@ -56,20 +67,8 @@ Create a  new conda environment: advomics, and install:
 
  - Loompy is not well maintained, and might be incompatible with the latest version of scanpy/anndata. It might need a separate environment. I suggest installing sincei and jupyter first, then trying to load loompy and the dataset. If you get an error, try a fresh install of loompy in a new environment.
 
-## Objectives
 
-The aim of this project is to partially replicate the findings of [Zeller, Yueng et al (2023)](https://www.nature.com/articles/s41588-022-01260-3), using a combination of tools: sincei, scanpy, and pyDESeq2.
-
-In particular we will try to replicate the results of cell clustering (shown in **Fig. 2 a,b**) and recover the top cell-type specific genes regulated by the activate/repressive chromatin states (**Fig. 2 c-f**).  
-
-Each project group would be assigned a chromatin mark and would therefore focus on replicating the results shown for their own chromatin mark.
-
- - Group 1: H3K4me1
- - Group 2: H3K27me3
- - Group 3: H3K4me3
- - Group 4: H3K9me3
-
-## Instructions
+## Analysis instructions
 
  - The data is available from figshare, using this link: https://figshare.com/s/31c3d4676830a614d886. Have a look at the data description on figshare for more details about the files.
 
@@ -84,10 +83,12 @@ Each project group would be assigned a chromatin mark and would therefore focus 
 
  - Compare your clustering/annotation results with the metadata provided with the files. Do we see the same cell types as the authors, or are there differences? How can we explain the differences (is that related to the biology, or an effect of preprocessing)?
 
- - Identify genes that are driving the cluster-specific differences. First we will try a simpler method: T-test or Wilcox test. Next, we will try the bulk differential enrichment (DE) analysis using DESeq2. Next, we will compare the 2 methods and also compare the results with the original study. Which genes are (re)discovered? Could you identify novel genes? Which analysis works better?
+ - Identify genes that are driving the cluster-specific differences. You can start with a simpler method: T-test or Wilcox test. Next, you can try the bulk differential enrichment (DE) analysis using DESeq2. The idea is to compare the 2 methods and also compare the results with the original study. Which genes are (re)discovered? Could you identify novel genes? Which analysis works better?
 
 ### Tips
 
  - The logic for pyDESeq2 analysis in our data is same as that for differential expression analysis (introduced in the **Transcriptomics** lectures). And if you prefer, you can use the original version of DESeq2 implemented in R, instead of pyDESeq2, and follow the workflow of the transcriptomics practical.
 
- - As pyDESEq2 is aimed at (pseudo)bulk differential expression analysis, this would require creating arbitrary pseudo-bulk replicates from single-cell counts for each cluster/celltype by sampling cells (without replacement) from each group.
+ - As pyDESEq2 is aimed at (pseudo)bulk differential expression analysis, this would require creating arbitrary (3-5) pseudo-bulk counts from single-cell counts for each cluster/celltype by sampling cells (without replacement) from each of them. Recall from the single-cell genomics lecture that the pseudo-bulk DE methods should work very well for such analysis.
+
+ - H3K4me1 and H3K4me3 are **active** histone modifications, therefore they correlate with active transcription, while H3K27me3 and H3K9me3 are **silencing** histone modifications, enriched on silenced genes. Therefore, we expect *opposite* results for group 1/3 vs group 2/4.
