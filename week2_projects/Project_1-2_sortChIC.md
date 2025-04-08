@@ -100,6 +100,8 @@ pip install --upgrade --force-reinstall git+https://github.com/vivekbhr/MultiQC.
 
  - After clustering, load the clustered .loom file in python, and apply the T-test in scanpy to find the top genes per cluster. Annotate clusters based on the top genes (compared to those shown in the sortChIC manuscript)
 
+ - You can use the file `allgenes_symbols_biotypes.tsv` to find the gene symbols corresponding to the ensembl gene IDs indicated in the top regions of your clusters. Hopefully the top ~20 gene list have some of the same genes are the authors show in Fig 2.
+
 
 ### Expected analysis for the project
 
@@ -109,6 +111,8 @@ pip install --upgrade --force-reinstall git+https://github.com/vivekbhr/MultiQC.
 
 ### Tips
 
+ - If you get errors with the memory usage, you can subset your data for a single chromosome using the feature names in the .loom objects (which are in the format `chromosome_start_end::geneID`).
+ 
  - The logic for pyDESeq2 analysis in our data is same as that for differential expression analysis (introduced in the **Transcriptomics** lectures). And if you prefer, you can use the original version of DESeq2 implemented in R, instead of pyDESeq2, and follow the workflow of the transcriptomics practical.
 
  - As pyDESEq2 is aimed at (pseudo)bulk differential expression analysis, this would require creating arbitrary (3-5) pseudo-bulk counts from single-cell counts for each cluster/celltype by sampling cells (without replacement) from each of them. Recall from the single-cell genomics lecture that the pseudo-bulk DE methods should work very well for such analysis.
