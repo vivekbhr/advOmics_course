@@ -65,7 +65,21 @@ Create a  new conda environment: advomics, and install:
  pip install pydeseq2
  ```
 
+### Getting around loompy
+
  - Loompy is not well maintained, and might be incompatible with the latest version of scanpy/anndata. It might need a separate environment. I suggest installing sincei and jupyter first, then trying to load loompy and the dataset. If you get an error, try a fresh install of loompy in a new environment.
+
+We created a version of sincei that doesn't rely on the loompy and loom files and instead uses the .h5ad files for the data (available on figshare). You can install it via github:
+
+```
+conda create -n advomics2 -c conda-forge scanpy gensim
+conda activate advomics2
+(sincei): pip install git+https://github.com/bhardwaj-lab/sincei.git@vivek#egg=sincei
+# downgrade scipy/numpy (otherwise gensim might complain)
+pip install scipy==1.12
+# test
+scClusterCells
+```
 
 
 ## Analysis instructions
