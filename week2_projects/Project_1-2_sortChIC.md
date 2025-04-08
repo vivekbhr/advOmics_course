@@ -78,7 +78,15 @@ conda activate advomics2
 # downgrade scipy/numpy (otherwise gensim might complain)
 pip install scipy==1.12
 # test
-scClusterCells
+scClusterCells --help
+```
+
+### Installing multiqc
+
+To install the version of multiqc that works with sincei (and summarises the QC results), you can try:
+
+```
+pip install --upgrade --force-reinstall git+https://github.com/vivekbhr/MultiQC.git
 ```
 
 
