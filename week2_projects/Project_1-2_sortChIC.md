@@ -56,7 +56,7 @@ Create a  new conda environment: advomics, and install:
 
 
 ### Tips
- - installing packages from conda requires a bit of back and forth. Not all packages will install right away, as the fetched package binaries depend on your OS. For example, the following order worked on an M3 macbook (architecture: OSX-ARM64)
+ - installing packages from conda requires a bit of back and forth. Not all packages will install right away, as the fetched package binaries depend on your operating system. For example, the following order worked on an M3 macbook (architecture: OSX-ARM64)
 
  ```
  conda create -n advomics_sincei -c bioconda -c conda-forge jupyter
@@ -64,22 +64,6 @@ Create a  new conda environment: advomics, and install:
  pip install sincei
  pip install pydeseq2
  ```
-
-### Getting around loompy
-
- - Loompy is not well maintained, and might be incompatible with the latest version of scanpy/anndata. It might need a separate environment. I suggest installing sincei and jupyter first, then trying to load loompy and the dataset. If you get an error, try a fresh install of loompy in a new environment.
-
-We created a version of sincei that doesn't rely on the loompy and loom files and instead uses the .h5ad files for the data (available on figshare). You can install it via github:
-
-```
-conda create -n advomics2 -c conda-forge scanpy gensim
-conda activate advomics2
-(sincei): pip install git+https://github.com/bhardwaj-lab/sincei.git@vivek#egg=sincei
-# downgrade scipy/numpy (otherwise gensim might complain)
-pip install scipy==1.12
-# test
-scClusterCells --help
-```
 
 ### Installing multiqc
 
@@ -98,16 +82,16 @@ pip install --upgrade --force-reinstall git+https://github.com/vivekbhr/MultiQC.
 
  - Follow the [sortChIC data analysis tutorial from sincei](https://sincei.readthedocs.io/en/latest/content/tutorials/sincei_tutorial_sortChIC.html) (step 4 onward) to filter and cluster the cells using the gene-body signal of the selected hPTM.
 
- - After clustering, load the clustered .loom/.h5ad file in python, and apply the T-test in scanpy to find the top genes per cluster. Look at the description of [anndata file format](https://anndata.readthedocs.io/en/stable/tutorials/notebooks/getting-started.html) to understand how to work with and extract information from this object. Since you start from raw counts, you need to first normalize and log-transform your data. Have a look at the [normalization](https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.html#normalization) and [marker gene set]((https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.html#differentially-expressed-genes-as-markers) steps from the scanpy manual for this analysis. Annotate clusters based on the top genes (compared to those shown in the sortChIC manuscript).
+ - After clustering, load the clustered .h5ad file in python, and apply the T-test in scanpy to find the top genes per cluster. Look at the description of [anndata file format](https://anndata.readthedocs.io/en/stable/tutorials/notebooks/getting-started.html) to understand how to work with and extract information from this object. Since you start from raw counts, you need to first normalize and log-transform your data. Have a look at the [normalization](https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.html#normalization) and [marker gene set]((https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.html#differentially-expressed-genes-as-markers) steps from the scanpy manual for this analysis. Annotate clusters based on the top genes (compared to those shown in the sortChIC manuscript).
 
  - You can use the file `allgenes_symbols_biotypes.tsv` to find the gene symbols corresponding to the ensembl gene IDs indicated in the top regions of your clusters. Hopefully the top ~20 gene list have some of the same genes are the authors show in Fig 2.
 
 
 ### Expected analysis for the project
 
- - Compare your clustering/annotation results with the metadata provided with the files. Do we see the same cell types as the authors, or are there differences? How can we explain the differences (is that related to the biology, or an effect of preprocessing)?
+ - Compare your clustering/annotation results with the cell metadata provided with the files. Do we see the same cell types as the authors, or are there differences? How can we explain the differences (is that related to the biology, or an effect of preprocessing/filtering)?
 
- - Identify genes that are driving the cluster-specific differences. You can start with a simpler method: T-test or Wilcox test. Next, you can try the bulk differential enrichment (DE) analysis using DESeq2. The idea is to compare the 2 methods and also compare the results with the original study. Which genes are (re)discovered? Could you identify novel genes? Which analysis works better?
+ - Identify genes that are driving the cluster-specific differences. You can start with a simpler method: T-test or Wilcox test. Next, you can try the bulk differential enrichment (DE) analysis using DESeq2. You can compare the results from the two methods and also compare your results with the original study. Which genes are (re)discovered? Could you identify novel genes? Which analysis works better?
 
 ### Tips
 
