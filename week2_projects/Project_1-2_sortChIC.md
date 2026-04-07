@@ -25,8 +25,6 @@ Each project group would be assigned a chromatin mark and would therefore focus 
 
  - Group 1: H3K4me1
  - Group 2: H3K27me3
- - Group 3: H3K4me3
- - Group 4: H3K9me3
 
 ## Installation instructions
 
@@ -48,7 +46,6 @@ In a nutshell:
 Create a  new conda environment: advomics, and install:
 
  - jupyter
- - loompy
  - sincei (also installs scanpy)
  - pyDESEQ2 (from pip)
 
@@ -67,6 +64,8 @@ Create a  new conda environment: advomics, and install:
 
 ### Installing multiqc
 
+MultiQC tool summarises QC results from different packages.
+
 To install the version of multiqc that works with sincei (and summarises the QC results), you can try:
 
 ```
@@ -78,11 +77,11 @@ pip install --upgrade --force-reinstall git+https://github.com/vivekbhr/MultiQC.
 
  - The data is available from figshare, using this link: https://figshare.com/s/31c3d4676830a614d886. Have a look at the data description on figshare for more details about the files.
 
- - Download the .loom/.h5ad file named with your selected hPTM (in case of H3K4me1, the file is `scCounts_genebodies_k4me1.loom`)
+ - Download the .h5ad file named with your selected hPTM (in case of H3K4me1, the file is `scCounts_genebodies_k4me1.h5ad`). Look at the description of [anndata file format](https://anndata.readthedocs.io/en/stable/tutorials/notebooks/getting-started.html) to understand how to work with and extract information from this object.
 
  - Follow the [sortChIC data analysis tutorial from sincei](https://sincei.readthedocs.io/en/latest/content/tutorials/sincei_tutorial_sortChIC.html) (step 4 onward) to filter and cluster the cells using the gene-body signal of the selected hPTM.
 
- - After clustering, load the clustered .h5ad file in python, and apply the T-test in scanpy to find the top genes per cluster. Look at the description of [anndata file format](https://anndata.readthedocs.io/en/stable/tutorials/notebooks/getting-started.html) to understand how to work with and extract information from this object. Since you start from raw counts, you need to first normalize and log-transform your data. Have a look at the [normalization](https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.html#normalization) and [marker gene set]((https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.html#differentially-expressed-genes-as-markers) steps from the scanpy manual for this analysis. Annotate clusters based on the top genes (compared to those shown in the sortChIC manuscript).
+ - After clustering, load the clustered .h5ad file in python, and apply the T-test in scanpy to find the top genes per cluster. Since you start from raw counts, you need to first normalize and log-transform your data. Have a look at the [normalization](https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.html#normalization) and [marker gene set]((https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.html#differentially-expressed-genes-as-markers) steps from the scanpy manual for this analysis. Annotate clusters based on the top genes (compared to those shown in the sortChIC manuscript).
 
  - You can use the file `allgenes_symbols_biotypes.tsv` to find the gene symbols corresponding to the ensembl gene IDs indicated in the top regions of your clusters. Hopefully the top ~20 gene list have some of the same genes are the authors show in Fig 2.
 
@@ -95,10 +94,10 @@ pip install --upgrade --force-reinstall git+https://github.com/vivekbhr/MultiQC.
 
 ### Tips
 
- - If you get errors with the memory usage, you can subset your data for a single chromosome using the feature names in the .loom objects (which are in the format `chromosome_start_end::geneID`).
+ - If you get errors with the memory usage, you can subset your data for a single chromosome using the feature names in the anndata objects (which are in the format `chromosome_start_end::geneID`).
 
  - The logic for pyDESeq2 analysis in our data is same as that for differential expression analysis (introduced in the **Transcriptomics** lectures). And if you prefer, you can use the original version of DESeq2 implemented in R, instead of pyDESeq2, and follow the workflow of the transcriptomics practical.
 
  - As pyDESEq2 is aimed at (pseudo)bulk differential expression analysis, this would require creating arbitrary (3-5) pseudo-bulk counts from single-cell counts for each cluster/celltype by sampling cells (without replacement) from each of them. Recall from the single-cell genomics lecture that the pseudo-bulk DE methods should work very well for such analysis.
 
- - H3K4me1 and H3K4me3 are **active** histone modifications, therefore they correlate with active transcription, while H3K27me3 and H3K9me3 are **silencing** histone modifications, enriched on silenced genes. Therefore, we expect *opposite* results for group 1/3 vs group 2/4.
+ - H3K4me1 and H3K4me3 are **active** histone modifications, therefore they correlate with active transcription, while H3K27me3 and H3K9me3 are **silencing** histone modifications, enriched on silenced genes. Therefore, we expect *opposite* interpretation of results for group 1 vs group 2.
