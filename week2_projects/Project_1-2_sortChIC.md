@@ -47,9 +47,15 @@ Create a  new conda environment: advomics, and install:
 
  - jupyter
  - sincei (also installs scanpy)
- - pyDESEQ2 (from pip)
+ - pyDESEQ2
+
+```
+  conda create -n advomics -c bioconda -c conda-forge jupyter sincei pydeseq2 > conda_install.log 2>&1 # useful to report errors
+```
 
 **Launch a new notebook within the advomics env and load the above packages to ensure that everything works.**
+
+If you get errors with installation/operation (which you can not resolve with "tips" or google search). Report the conda_install.log to slack.
 
 ### Tips
  - installing packages from conda requires a bit of back and forth. Not all packages will install right away, as the fetched package binaries depend on your operating system. For example, the following command workes on an M3 macbook (architecture: OSX-ARM64)
@@ -61,9 +67,11 @@ Create a  new conda environment: advomics, and install:
 but if you get errors, you can also install packages from pip, like:
 
  ```
- conda create -n advomics -c bioconda -c conda-forge jupyter sincei
+ conda create -n advomics -c bioconda -c conda-forge jupyter sincei # skipped pyDESEQ2 from conda
  conda activate advomics
- pip install pydeseq2
+
+ pip install pydeseq2 # installed from pip now
+ pip uninstall -y scanpy && pip install scanpy # re-installs scanpy
  ```
 
  - If you get SSH-related errors (which is unlikely if you installed conda from miniforge), you'd have to remove the "defaults" channel from your conda channel list (as it is properitory).
@@ -86,11 +94,11 @@ pip install --upgrade --force-reinstall git+https://github.com/vivekbhr/MultiQC.
 
 ## Analysis instructions
 
- - The data is available from figshare, using this link: https://figshare.com/s/31c3d4676830a614d886. Have a look at the data description on figshare for more details about the files. (**940 mb**)
+ - The data is available from figshare, using this link: https://figshare.com/s/31c3d4676830a614d886. Have a look at the data description on figshare for more details about the files. (**940 mb** for entire dataset)
 
  - Download the .h5ad file named with your selected hPTM (in case of H3K4me1, the file is `scCounts_genebodies_k4me1.h5ad`). Look at the description of [anndata file format](https://anndata.readthedocs.io/en/stable/tutorials/notebooks/getting-started.html) to understand how to work with and extract information from this object.
 
- - Follow the [sortChIC data analysis tutorial from sincei](https://sincei.readthedocs.io/en/latest/content/tutorials/sincei_tutorial_sortChIC.html) (step 4 onward) to filter and cluster the cells using the gene-body signal of the your assigned hPTM.
+ - Follow the [sortChIC data analysis tutorial from sincei](https://sincei.readthedocs.io/en/latest/content/tutorials/sincei_tutorial_sortChIC.html) (step 4-5) to filter and cluster the cells using the gene-body signal of the your assigned hPTM.
 
  - After clustering, load the clustered .h5ad file in python, and apply the **T-test** in [scanpy package](https://scanpy.readthedocs.io/en/stable/) to find the top genes per cluster. Since you start from raw counts, you need to first normalize and log-transform your data. Have a look at the [normalization](https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.html#normalization) and [marker gene detection]((https://scanpy.readthedocs.io/en/stable/tutorials/basics/clustering.html#differentially-expressed-genes-as-markers) steps from the scanpy manual for this analysis. Annotate the cell clusters based on the hPTM signal on top marker genes (compared to those shown in the sortChIC manuscript).
 
